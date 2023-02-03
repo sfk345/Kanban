@@ -1,7 +1,7 @@
 body{
     margin: 0;
     padding: 0;
-    background-image: url("../img/black-background.jpg");
+    background-image: url("../img/blue-background.jpg");
 }
 p{
     font-family: cursive;
@@ -52,6 +52,7 @@ li{
 }
 .note{
     margin: 0 50px 30px;
+
 }
 .btn{
     border-radius: 15px;
@@ -62,4 +63,7 @@ li{
     background: linear-gradient(45deg, #ff8585, #ff2828, #410000);
     color: black;
     font-family: cursive;
+}
+.background-one{
+    background: linear-gradient(66deg, black,#257d98, #0ac3ff, #30778d, black);
 }

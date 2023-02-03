@@ -62,7 +62,7 @@ Vue.component('columnOne', {
                 <div class="column-one" v-for="column in noteOne">
                 <h3>{{column.name}}</h3>
                     <span>
-                        <li v-for="task in column.arrayOfTasks" v-if="task.title != null" >
+                        <li v-for="task in column.arrayOfTasks" v-if="task.title != null"" >
                                 <strong>{{task.id}}</strong>
                                 <input type="checkbox" 
                                 v-on:change="task.completed = true" 
@@ -107,7 +107,7 @@ Vue.component('columnTwo', {
             <div class="column-one" v-for="column in noteTwo">
             <h3>{{column.name}}</h3>
                 <span>
-                    <li v-for="task in column.arrayOfTasks" v-if="task.title != null" >
+                    <li v-for="task in column.arrayOfTasks" v-if="task.title != null">
                             <strong>{{task.id}}</strong>
                             <input type="checkbox" 
                             v-on:change="task.completed = true" 
@@ -151,7 +151,7 @@ Vue.component('columnThree', {
             <div class="column-one" v-for="column in noteThree">
             <h3>{{column.name}}</h3>
                 <span>
-                    <li v-for="task in column.arrayOfTasks" v-if="task.title != null" >
+                    <li v-for="task in column.arrayOfTasks" v-if="task.title != null">
                             <strong>{{task.id}}</strong>
                             <input type="checkbox" 
                             :disabled="task.completed" 
@@ -171,6 +171,20 @@ Vue.component('columnThree', {
 
     },
 
+})
+Vue.component('columnFore', {
+    template: `
+    
+    `,
+    data(){
+
+    },
+    props:{
+
+    },
+    methods:{
+
+    }
 })
 Vue.component('note-add', {
     template: `
