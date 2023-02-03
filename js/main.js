@@ -29,17 +29,18 @@ Vue.component('Notes', {
         eventBus.$on('firstColumn', noteCard => {
             if(this.noteOne.length < 3){
                 this.noteOne.push(noteCard)
+
                 console.log(this.noteOne)
             }
         })
-        eventBus.$on('secondColumn', noteCard => {
-            if(this.noteTwo.length < 5){
-                this.noteTwo.push(noteCard)
-                this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
-                console.log(this.noteTwo)
-            }
-
-        })
+        // eventBus.$on('secondColumn', noteCard => {
+        //     if(this.noteTwo.length < 5){
+        //         this.noteTwo.push(noteCard)
+        //         this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
+        //         console.log(this.noteTwo)
+        //     }
+        //
+        // })
         eventBus.$on('thirdColumn', noteCard => {
             this.noteThree.push(noteCard)
             this.noteTwo.splice(this.noteTwo.indexOf(noteCard), 1)
@@ -66,10 +67,15 @@ Vue.component('columnOne', {
                                 <strong>{{task.id}}</strong>
                                 <input type="checkbox" 
                                 v-on:change="task.completed = true" 
-                                v-on:change='column.status += 1'
-                                @change.prevent="changeCol(column)">
+                                :disabled="task.completed" 
+                                v-on:change='column.status += 1'>
                                 <span :class="{done: task.completed}" >{{task.title}}</span>
                         </li>
+                        <input
+                            value="Change"
+                            class="btn-del"
+                            type="button"
+                            @click="Changing">
                         <input
                             value="Delete"
                             class="btn-del"
@@ -87,14 +93,11 @@ Vue.component('columnOne', {
                     console.log(allNotes)
                 }
             }
-            if (((noteCard.status / allNotes) * 100 >= 50) && (noteCard.status / allNotes) * 100 != 100) {
-                eventBus.$emit('secondColumn', noteCard)
-            }
-            if ((noteCard.status / allNotes) * 100 === 100) {
-                noteCard.date = new Date().toLocaleString()
-                eventBus.$emit('fromFirstColumnToThird', noteCard)
-            }
 
+        },
+        Changing(noteCard) {
+            this.noteTwo.push(noteCard)
+            this.noteOne.splice(this.noteOne.indexOf(noteCard),1)
         },
         DeleteNote(noteCard){
             this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
@@ -120,6 +123,9 @@ Vue.component('columnTwo', {
                             <strong>{{task.id}}</strong>
                             <input type="checkbox" 
                             v-on:change="task.completed = true" 
+                            :disabled="task.completed" 
+                            v-on:change='column.status += 1'
+                            @change.prevent="changeColTwo(column)"
                             >
                             <span :class="{done: task.completed}" >{{task.title}}</span>
                     </li>
@@ -136,19 +142,19 @@ Vue.component('columnTwo', {
 
     },
     methods: {
-        // changeColTwo(noteCard) {
-        //     let allNotes = 0
-        //     for(let i = 0; i < 5; i++){
-        //         if (noteCard.arrayOfTasks[i].title != null) {
-        //             allNotes++
-        //         }
-        //     }
-        //     if ((noteCard.status / allNotes) * 100 === 100) {
-        //         noteCard.date = new Date().toLocaleString()
-        //         eventBus.$emit('thirdColumn', noteCard)
-        //     }
-        //
-        // },
+        changeColTwo(noteCard) {
+            let allNotes = 0
+            for(let i = 0; i < 5; i++){
+                if (noteCard.arrayOfTasks[i].title != null) {
+                    allNotes++
+                }
+            }
+            if ((noteCard.status / allNotes) * 100 === 100) {
+                noteCard.date = new Date().toLocaleString()
+                eventBus.$emit('thirdColumn', noteCard)
+            }
+
+        },
     }
 
 })
