@@ -33,14 +33,14 @@ Vue.component('Notes', {
                 console.log(this.noteOne)
             }
         })
-        // eventBus.$on('secondColumn', noteCard => {
-        //     if(this.noteTwo.length < 5){
-        //         this.noteTwo.push(noteCard)
-        //         this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
-        //         console.log(this.noteTwo)
-        //     }
-        //
-        // })
+        eventBus.$on('secondColumn', noteCard => {
+            if(this.noteTwo.length != null){
+                this.noteTwo.push(noteCard)
+                this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
+                console.log(this.noteTwo)
+            }
+
+        })
         eventBus.$on('thirdColumn', noteCard => {
             this.noteThree.push(noteCard)
             this.noteTwo.splice(this.noteTwo.indexOf(noteCard), 1)
@@ -66,8 +66,7 @@ Vue.component('columnOne', {
                         <li v-for="task in column.arrayOfTasks" v-if="task.title != null" >
                                 <strong>{{task.id}}</strong>
                                 <input type="checkbox" 
-                                v-on:change="task.completed = true" 
-                                :disabled="task.completed" 
+                                v-on:change="task.completed = true"
                                 v-on:change='column.status += 1'>
                                 <span :class="{done: task.completed}" >{{task.title}}</span>
                         </li>
@@ -85,23 +84,12 @@ Vue.component('columnOne', {
                 </div>
        </div>`,
     methods: {
-        changeCol(noteCard) {
-            let allNotes = 0
-            for(let i = 0; i < 5; i++){
-                if (noteCard.arrayOfTasks[i].title != null) {
-                    allNotes++
-                    console.log(allNotes)
-                }
-            }
-
-        },
-        Changing(noteCard) {
-            this.noteTwo.push(noteCard)
-            this.noteOne.splice(this.noteOne.indexOf(noteCard),1)
-        },
         DeleteNote(noteCard){
             this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
             console.log(noteCard)
+        },
+        Changing(noteCard){
+            eventBus.$emit('secondColumn', noteCard)
         }
     },
     props: {
