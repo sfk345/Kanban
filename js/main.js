@@ -62,15 +62,19 @@ Vue.component('columnOne', {
                 <div class="column-one" v-for="column in noteOne">
                 <h3>{{column.name}}</h3>
                     <span>
-                        <li v-for="task in column.arrayOfTasks" v-if="task.title != null"" >
+                        <li v-for="task in column.arrayOfTasks" v-if="task.title != null" >
                                 <strong>{{task.id}}</strong>
                                 <input type="checkbox" 
                                 v-on:change="task.completed = true" 
-                                :disabled="task.completed" 
                                 v-on:change='column.status += 1'
                                 @change.prevent="changeCol(column)">
                                 <span :class="{done: task.completed}" >{{task.title}}</span>
                         </li>
+                        <input
+                            value="Delete"
+                            class="btn-del"
+                            type="button"
+                            @click="DeleteNote">
                     </span>
                 </div>
        </div>`,
@@ -80,6 +84,7 @@ Vue.component('columnOne', {
             for(let i = 0; i < 5; i++){
                 if (noteCard.arrayOfTasks[i].title != null) {
                     allNotes++
+                    console.log(allNotes)
                 }
             }
             if (((noteCard.status / allNotes) * 100 >= 50) && (noteCard.status / allNotes) * 100 != 100) {
@@ -91,6 +96,10 @@ Vue.component('columnOne', {
             }
 
         },
+        DeleteNote(noteCard){
+            this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
+            console.log(noteCard)
+        }
     },
     props: {
         noteOne:{
@@ -107,16 +116,14 @@ Vue.component('columnTwo', {
             <div class="column-one" v-for="column in noteTwo">
             <h3>{{column.name}}</h3>
                 <span>
-                    <li v-for="task in column.arrayOfTasks" v-if="task.title != null">
+                    <li v-for="task in column.arrayOfTasks" v-if="task.title != null"  :class="{BackgroundTwo: task.title != null}">
                             <strong>{{task.id}}</strong>
                             <input type="checkbox" 
                             v-on:change="task.completed = true" 
-                            :disabled="task.completed" 
-                            v-on:change='column.status += 1'
-                            @change.prevent="changeColTwo(column)"
                             >
                             <span :class="{done: task.completed}" >{{task.title}}</span>
                     </li>
+                    <p>Date of the problem solution: <br>{{column.date}}</p>
                 </span>
             </div>
        </div>`,
@@ -129,19 +136,19 @@ Vue.component('columnTwo', {
 
     },
     methods: {
-        changeColTwo(noteCard) {
-            let allNotes = 0
-            for(let i = 0; i < 5; i++){
-                if (noteCard.arrayOfTasks[i].title != null) {
-                    allNotes++
-                }
-            }
-            if ((noteCard.status / allNotes) * 100 === 100) {
-                noteCard.date = new Date().toLocaleString()
-                eventBus.$emit('thirdColumn', noteCard)
-            }
-
-        },
+        // changeColTwo(noteCard) {
+        //     let allNotes = 0
+        //     for(let i = 0; i < 5; i++){
+        //         if (noteCard.arrayOfTasks[i].title != null) {
+        //             allNotes++
+        //         }
+        //     }
+        //     if ((noteCard.status / allNotes) * 100 === 100) {
+        //         noteCard.date = new Date().toLocaleString()
+        //         eventBus.$emit('thirdColumn', noteCard)
+        //     }
+        //
+        // },
     }
 
 })
@@ -151,7 +158,7 @@ Vue.component('columnThree', {
             <div class="column-one" v-for="column in noteThree">
             <h3>{{column.name}}</h3>
                 <span>
-                    <li v-for="task in column.arrayOfTasks" v-if="task.title != null">
+                    <li v-for="task in column.arrayOfTasks" v-if="task.title != null" :class="{BackgroundThree: task.title != null}">
                             <strong>{{task.id}}</strong>
                             <input type="checkbox" 
                             :disabled="task.completed" 
@@ -171,20 +178,6 @@ Vue.component('columnThree', {
 
     },
 
-})
-Vue.component('columnFore', {
-    template: `
-    
-    `,
-    data(){
-
-    },
-    props:{
-
-    },
-    methods:{
-
-    }
 })
 Vue.component('note-add', {
     template: `

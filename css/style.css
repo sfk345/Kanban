@@ -64,6 +64,13 @@ li{
     color: black;
     font-family: cursive;
 }
-.background-one{
-    background: linear-gradient(66deg, black,#257d98, #0ac3ff, #30778d, black);
+.btn-del{
+    width: 80px;
+    border-radius: 11px;
+    background: linear-gradient(45deg, #00b6ff, #0c0059);
+    height: 25px;
+    color: aliceblue;
 }
+/*.background-one{*/
+/*    background: linear-gradient(66deg, black,#257d98, #0ac3ff, #30778d, black);*/
+/*}*/
