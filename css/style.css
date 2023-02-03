@@ -1,79 +1,79 @@
-body{
-    margin: 0;
-    padding: 0;
-    background-image: url("../img/blue-background.jpg");
-}
-p{
-    font-family: cursive;
-    color: red;
-}
-h1{
-    text-align: center;
-    font-family: cursive;
-    color: red;
-    /*box-shadow: 0 20px 20px #6c6c6c;*/
-}
-h2{
-    font-family: cursive;
-    color: red;
-}
-h3{
-    font-family: cursive;
-    color: #ff5757;
-}
-li{
-    color: #ff5757;
-}
-.note-form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: linear-gradient(341deg, black,#257d98, #0ac3ff, #30778d, black);
-    border-radius: 25px;
-    width: 250px;
-}
-.form-label{
-    color: #ff5757;
-    font-family: cursive;
-}
-.form-input{
-    border-radius: 10px;
-    width: 200px;
-    height: 25px;
-    margin-bottom: 15px;
-}
-#task{
-    margin-bottom: 15px;
-}
-.Notes{
-    display: flex;
-    justify-content: space-around
-}
-.all-cards{
-    display: flex;
-    justify-content: space-around
-}
-.note{
-    margin: 0 50px 30px;
-
-}
-.btn{
-    border-radius: 15px;
-    width: 200px;
-    height: 35px;
-    margin-bottom: 15px;
-    border: none;
-    background: linear-gradient(45deg, #ff8585, #ff2828, #410000);
-    color: black;
-    font-family: cursive;
-}
-.btn-del{
-    width: 80px;
-    border-radius: 11px;
-    background: linear-gradient(45deg, #00b6ff, #0c0059);
-    height: 25px;
-    color: aliceblue;
-}
-/*.background-one{*/
-/*    background: linear-gradient(66deg, black,#257d98, #0ac3ff, #30778d, black);*/
+/*body{*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    background-image: url("../img/blue-background.jpg");*/
 /*}*/
+/*p{*/
+/*    font-family: cursive;*/
+/*    color: red;*/
+/*}*/
+/*h1{*/
+/*    text-align: center;*/
+/*    font-family: cursive;*/
+/*    color: red;*/
+/*    !*box-shadow: 0 20px 20px #6c6c6c;*!*/
+/*}*/
+/*h2{*/
+/*    font-family: cursive;*/
+/*    color: red;*/
+/*}*/
+/*h3{*/
+/*    font-family: cursive;*/
+/*    color: #ff5757;*/
+/*}*/
+/*li{*/
+/*    color: #ff5757;*/
+/*}*/
+/*.note-form{*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*    background: linear-gradient(341deg, black,#257d98, #0ac3ff, #30778d, black);*/
+/*    border-radius: 25px;*/
+/*    width: 250px;*/
+/*}*/
+/*.form-label{*/
+/*    color: #ff5757;*/
+/*    font-family: cursive;*/
+/*}*/
+/*.form-input{*/
+/*    border-radius: 10px;*/
+/*    width: 200px;*/
+/*    height: 25px;*/
+/*    margin-bottom: 15px;*/
+/*}*/
+/*#task{*/
+/*    margin-bottom: 15px;*/
+/*}*/
+/*.Notes{*/
+/*    display: flex;*/
+/*    justify-content: space-around*/
+/*}*/
+/*.all-cards{*/
+/*    display: flex;*/
+/*    justify-content: space-around*/
+/*}*/
+/*.note{*/
+/*    margin: 0 50px 30px;*/
+
+/*}*/
+/*.btn{*/
+/*    border-radius: 15px;*/
+/*    width: 200px;*/
+/*    height: 35px;*/
+/*    margin-bottom: 15px;*/
+/*    border: none;*/
+/*    background: linear-gradient(45deg, #ff8585, #ff2828, #410000);*/
+/*    color: black;*/
+/*    font-family: cursive;*/
+/*}*/
+/*.btn-del{*/
+/*    width: 80px;*/
+/*    border-radius: 11px;*/
+/*    background: linear-gradient(45deg, #00b6ff, #0c0059);*/
+/*    height: 25px;*/
+/*    color: aliceblue;*/
+/*}*/
+/*!*.background-one{*!*/
+/*!*    background: linear-gradient(66deg, black,#257d98, #0ac3ff, #30778d, black);*!*/
+/*!*}*!*/

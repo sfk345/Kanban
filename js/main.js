@@ -1,279 +1,252 @@
 let eventBus = new Vue()
+
 Vue.component('Notes', {
-    template: `
-       <div class="Notes">
-           <div class="all-cards">
-                <div class="note">
-                    <columnOne :noteOne="noteOne"></columnOne>
-                </div>
-                <div class="note">
-                    <columnTwo :noteTwo="noteTwo"></columnTwo>
-                </div>
-                <div class="note">
-                    <columnThree :noteThree="noteThree"></columnThree>
-                </div>
-                <div class="note">
-                    <columnFore :noteFore="noteFore"></columnFore>
-                </div>
-                <note-add></note-add>
-           </div>
-       </div>`,
+    template:`
+    <div id="Notes">
+        <div class="note">
+            <columnOne :noteOne="noteOne"></columnOne>
+        </div>
+        <div class="note">
+            <columnTwo :noteTwo="noteTwo"></columnTwo>
+        </div>
+        <div class="note">
+            <columnThree :noteThree="noteThree"></columnThree>
+        </div>
+        <div class="note">
+            <columnFore :noteFore="noteFore"></columnFore>
+        </div>
+        <note-add></note-add>
+    </div>
+`,
     data() {
         return {
-            noteOne:[],
-            noteTwo:[],
-            noteThree:[],
-            noteFore:[]
+            noteOne: [],
+            noteTwo: [],
+            noteThree: [],
+            noteFore: []
         }
     },
     mounted() {
         eventBus.$on('firstColumn', noteCard => {
             this.noteOne.push(noteCard)
-
-            console.log(this.noteOne)
         })
         eventBus.$on('secondColumn', noteCard => {
             this.noteTwo.push(noteCard)
 
-            console.log(this.noteTwo)
 
         })
         eventBus.$on('thirdColumn', noteCard => {
             this.noteThree.push(noteCard)
-
-            console.log(this.noteThree)
         })
         eventBus.$on('forthColumn', noteCard => {
             this.noteFore.push(noteCard)
-            noteCard.completedOnTime = new Date().toLocaleString()
-
+            noteCard.completedOnTime = new Date().toLocaleDateString()
         })
-
     },
 
-
 })
+
 Vue.component('columnOne', {
     template: `
-       <div class="column">
-                <div class="column-one">
-                <h3>New tasks</h3>
-                    <div>
-                        <p>{{noteCard.name}}</p>
-                        <ul>
-                            <li>Description of task: {{noteCard.task}}</li>
-                            <li>Date of creation: {{noteCard.dateCreate}}</li>
-                            <li>Date of deadline: {{noteCard.dateTask}}</li>
-                            <li v-if="noteCard.update != null">Last updated: {{noteCard.update}}</li>
-                        </ul>
-                        <button @click="ChangNote(noteCard)">Change</button>
-                        <button @click="UpdateNote(noteCard)">Update</button>
-                        <button @click="DeleteNote(noteCard)">Delete</button>
-                    </div>
-                </div>
-       </div>`,
+        <div class="col">
+            <h3>New task</h3>
+            <div class="column-one" v-for="noteCard in noteOne">
+                <p>{{noteCard.name}}</p>
+                <ul>
+                    <li class="tasks">Description: {{noteCard.task}}</li>
+                    <li class="tasks">Date of creation:
+                    {{ noteCard.dateCreate }}</li>
+                    <li class="tasks">Deadline: {{noteCard.dateDeadline}}</li>
+                    <li class="tasks" v-if="noteCard.update != null">Last updated: {{ noteCard.update }}</li>
+                </ul>
+                <a @click="updateNote(noteCard)">Update</a>
+                <a @click="deleteNote(noteCard)">Delete</a>
+                <a @click="nextNote(noteCard)">Next ></a>
+            </div>
+        </div>
+    `,
+    props: {
+        noteOne: {
+            type: Array,
+        },
+        noteTwo: {
+            type: Array,
+        },
+        noteCard: {
+            type: Object
+        },
+    },
     methods: {
-        DeleteNote(noteCard){
-            this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
-            console.log(noteCard)
-        },
-        UpdateNote(noteCard){
-            noteCard.name = prompt('Name of new task:', noteCard.name)
-            noteCard.task = prompt('New task:', noteCard.task)
-            noteCard.dateTask = prompt('Date of deadline:', noteCard.dateTask)
-            noteCard.update = new Date().toLocaleString()
-        },
-        ChangNote(noteCard){
+        nextNote(noteCard) {
             this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
             eventBus.$emit('secondColumn', noteCard)
+        },
+        deleteNote(noteCard) {
+            this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
+        },
+        updateNote(noteCard) {
+            noteCard.name = prompt('Name of new task', noteCard.name)
+            noteCard.task = prompt('New task', noteCard.task)
+            noteCard.dateDeadline = prompt('Deadline for task', noteCard.dateDeadline)
+            noteCard.update = new Date().toLocaleString()
         }
-    },
-    props: {
-        noteOne:{
-            type: Array
-
-        },
-        noteTwo:{
-            type: Array
-
-        },
-        noteCard:{
-            type: Object
-
-        },
     },
 
 })
+
 Vue.component('columnTwo', {
     template: `
-       <div class="column">
-                <div class="column-one">
-                <h3>Task in progress</h3>
-                    <div>
-                        <p>{{noteCard.name}}</p>
-                        <ul>
-                            <li>Description of task: {{noteCard.task}}</li>
-                            <li>Date of creation: {{noteCard.dateCreate}}</li>
-                            <li>Date of deadline: {{noteCard.dateTask}}</li>
-                            <li v-if="noteCard.update != null">Last updated: {{noteCard.update}}</li>
-                        </ul>
-                        <button @click="ChangeNoteTwo(noteCard)">Change</button>
-                        <button @click="UpdateNoteTwo(noteCard)">Update</button>
-                    </div>
-                </div>
-       </div>`,
-    props: {
-        noteTwo:{
-            type: Array,
+        <div class="col">
+            <h2>Tasks in progress</h2>
+            <div class="column-one" v-for="noteCard in noteTwo">
+                <p>{{noteCard.name}}</p>
+                <ul>
+                    <li class="tasks">Description: {{noteCard.task}}</li>
+                    <li class="tasks">Date of creation:
+                    {{ noteCard.dateCreate }}</li>
+                    <li class="tasks">Deadline: {{noteCard.dateDeadline}}</li>
+                    <li class="tasks" v-if="noteCard.reasonForReturn != null">Reason of return: {{ noteCard.reasonForReturn }}</li>
+                    <li class="tasks" v-if="noteCard.update != null">Last updated: {{ noteCard.update }}</li>
+                </ul>
+                <a @click="updateNote(noteCard)">Update</a>
+                <a @click="nextNote(noteCard)">Next ></a>
 
+            </div>
+        </div>
+    `,
+    props: {
+        noteTwo: {
+            type: Array,
         },
         noteCard: {
             type: Object
         }
-
     },
     methods: {
-        ChangeNoteTwo(noteCard) {
+        nextNote(noteCard) {
             this.noteTwo.splice(this.noteTwo.indexOf(noteCard), 1)
             eventBus.$emit('thirdColumn', noteCard)
-        }
-
         },
-        UpdateNoteTwo(noteCard){
-            noteCard.name = prompt('Name of new task:', noteCard.name)
-            noteCard.task = prompt('New task:', noteCard.task)
-            noteCard.dateTask = prompt('Date of deadline:', noteCard.dateTask)
+        updateNote(noteCard) {
+            noteCard.name = prompt('Name of new task', noteCard.name)
+            noteCard.task = prompt('New task', noteCard.task)
+            noteCard.dateDeadline = prompt('Deadline for task', noteCard.dateDeadline)
             noteCard.update = new Date().toLocaleString()
-        },
-
+        }
+    }
 })
+
 Vue.component('columnThree', {
     template: `
-       <div class="column">
-                <div class="column-one">
-                <h3>Tested tasks</h3>
-                    <div>
-                        <p>{{noteCard.name}}</p>
-                        <ul>
-                            <li>Description of task: {{noteCard.task}}</li>
-                            <li>Date of creation: {{noteCard.dateCreate}}</li>
-                            <li>Date of deadline: {{noteCard.dateTask}}</li>
-                            <li v-if="noteCard.update != null">Last updated: {{noteCard.update}}</li>
-                            <li v-if="noteCard.reasonForReturn != null">Reason for return: {{noteCard.reasonForReturn}}</li>
-                        </ul>
-                        <button @click="ChangeNoteThree(noteCard)">Change</button>
-                        <button @click="UpdateNoteThree(noteCard)">Update</button>
-                        <button @click="BringBack(noteCard)">Back</button>
-                    </div>
-                </div>
-       </div>`,
+        <div class="col">
+            <h3>Testing</h3>
+            <div class="column-one" v-for="noteCard in noteThree" >
+                <p>{{noteCard.name}}</p>
+                <ul>
+                    <li class="tasks">Description: {{noteCard.task}}</li>
+                    <li class="tasks">Date of creation:
+                    {{ noteCard.dateCreate }}</li>
+                    <li class="tasks">Deadline: {{noteCard.dateDeadline}}</li>
+                    <li class="tasks" v-if="noteCard.reasonForReturn != null">Reason of return: {{ noteCard.reasonForReturn }}</li>
+                    <li class="tasks" v-if="noteCard.update != null">Last updated: {{ noteCard.update}}</li>
+                </ul>
+                <a @click="updateNote(noteCard)">Update</a>
+                <a @click="nextNote(noteCard)">Next ></a>
+                <a @click="Previous(noteCard)">< Previous</a>
+            </div>
+        </div>
+    `,
     props: {
-        noteThree:{
+        noteThree: {
             type: Array,
-            required: false
-
         },
-        noteCard:{
+        noteCard: {
             type: Object
         }
-
     },
-    methods:{
-        ChangeNoteThree(noteCard) {
+    methods: {
+        nextNote(noteCard) {
             this.noteThree.splice(this.noteThree.indexOf(noteCard), 1)
             eventBus.$emit('forthColumn', noteCard)
         },
-        UpdateNoteThree(noteCard){
-            noteCard.name = prompt('Name of new task:', noteCard.name)
-            noteCard.task = prompt('New task:', noteCard.task)
-            noteCard.dateTask = prompt('Date of deadline:', noteCard.dateTask)
-            noteCard.update = new Date().toLocaleString()
-        },
-        BringBack(noteCard){
-            noteCard.reasonForReturn = prompt('Your reason for return this note:')
+        Previous(noteCard) {
+            noteCard.reason = prompt('reason for transfer')
             this.noteThree.splice(this.noteThree.indexOf(noteCard), 1)
             eventBus.$emit('secondColumn', noteCard)
+        },
+        updateNote(noteCard) {
+            noteCard.name = prompt('Name of new task', noteCard.name)
+            noteCard.task = prompt('New task', noteCard.task)
+            noteCard.dateDeadline = prompt('Deadline for task', noteCard.dateDeadline)
+            noteCard.edit = new Date().toLocaleString()
         }
-    },
-
+    }
 })
+
 Vue.component('columnFore', {
     template: `
-       <div class="column">
-                <div class="column-one">
-                <h3>Completed task</h3>
-                    <div>
-                        <p>{{noteCard.name}}</p>
-                        <ul>
-                            <li>Description of task: {{noteCard.task}}</li>
-                            <li>Date of creation: {{noteCard.dateCreate}}</li>
-                            <li>Date of deadline: {{noteCard.dateTask}}</li>
-                            <li v-if="noteCard.update != null">Last updated: {{noteCard.update}}</li>
-                            <li v-if="noteCard.dateTask">Date of creation: {{noteCard.dateCreate}}</li>
-                        </ul>
-                        <button @click="ChangNote(noteCard)">Change</button>
-                        <button @click="UpdateNote(noteCard)">Update</button>
-                        <button @click="DeleteNote(noteCard)">Delete</button>
-                    </div>
-                </div>
-       </div>`,
-    methods: {
-        DeleteNote(noteCard){
-            this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
-            console.log(noteCard)
+        <div class="col">
+            <h3>Completed tasks</h3>
+            <div class="column-one" v-for="noteCard in noteFore">
+                <p>{{noteCard.name}}</p>
+                <ul>
+                    <li class="tasks">Description: {{noteCard.task}}</li>
+                    <li class="tasks">Date of creation:
+                    {{ noteCard.dateCreate }}</li>
+                    <li class="tasks">Deadline: {{noteCard.dateDeadline}}</li>
+                    <li class="tasks" v-if="noteCard.dateDeadline >= noteCard.completedOnTime">Сompleted in time</li>
+                    <li class="tasks" v-if="noteCard.dateDeadline < noteCard.completedOnTime">Not completed in time</li>
+                </ul>
+            </div>
+        </div>
+    `,
+    props: {
+        noteFore: {
+            type: Array,
         },
-        UpdateNote(noteCard){
-            noteCard.name = prompt('Name of new task:', noteCard.name)
-            noteCard.task = prompt('New task:', noteCard.task)
-            noteCard.dateTask = prompt('Date of deadline:', noteCard.dateTask)
-            noteCard.update = new Date().toLocaleString()
-        },
-        ChangNote(noteCard){
-            this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
-            eventBus.$emit('secondColumn', noteCard)
+        noteCard: {
+            type: Object
         }
     },
-    props: {
-        noteOne:{
-            type: Array
-
-        },
-        noteTwo:{
-            type: Array
-
-        },
-        noteCard:{
-            type: Object
-
-        },
-    },
-
+    computed:  {
+        completedCard() {
+            let completed = null
+            if (Notes.noteFore.noteCard.dateDeadline < Notes.noteFore.noteCard.completedOnTime) {
+                completed = 'Сompleted on time'
+            } else {
+                completed = 'Not completed on time'
+            }
+            return completed
+        }
+    }
 })
 
 Vue.component('note-add', {
-    template: `   
-       <div>
-       <form class="note-form">
-            <label for="name" class="form-label">Name of the note</label>
-           <input class="form-input" id="name" v-model="name" required placeholder="task">
-            <div class="name-column">
-                <label for="task" class="form-label">Add note</label>
-                <textarea class="form-input" id="task" v-model="task" required placeholder="task"></textarea>
+    template: `
+    <div class="addform">
+        <form>
+            <p>
+                <label for="name">Name of the note</label>
+                <input id="form-name" required v-model="name" maxlength="30" type="text" placeholder="title">
+            </p>
+            <div>
+                <label for="description">Description for new note</label>
+                <textarea required id="form-input" rows="5" columns="10" v-model="task" maxlength="60"> </textarea>
             </div>
-            <div class="name-column">
-                <label for="dateTask" class="form-label">Deadline date</label>
-                <input class="form-input" id="dateTask" v-model="dateTask" type="date">
+            <div>
+                <label for="deadline">Deadline of the note</label>
+                <input required type="date" required placeholder="01.01.1990" id="form-date" v-model="dateDeadline">
             </div>
-            <input @click="onSubmit" class="btn" type="button" value="Create"> 
-       </form>
-       </div>`,
-
+            <button @click="onSubmit">Add a task</button>
+        </form>
+    </div>
+    `,
     data() {
         return {
             name: null,
-            task:null,
-            dateTask:null,
+            task: null,
             dateCreate: null,
+            dateDeadline: null,
         }
     },
     methods: {
@@ -281,35 +254,29 @@ Vue.component('note-add', {
             let noteCard = {
                 name: this.name,
                 task: this.task,
-                dateTask: this.dateTask,
                 dateCreate: new Date().toLocaleString(),
-                update: null,
+                dateDeadline: this.dateDeadline,
                 reasonForReturn: null,
+                update: null,
                 completedOnTime: null
             }
             eventBus.$emit('firstColumn', noteCard)
-                this.name = null
-                this.task = null
-                this.dateTask = null
-                this.dateCreate = null
-        },
-
-    },
-
-    props: {
-        noteOne:{
-            type: Array,
-            required: false
-
+            this.name = null
+            this.task = null
+            this.dateDeadline = null
+            this.dateCreate = null
+            console.log(noteCard)
         }
-    },
-
+    }
 })
+
 
 let app = new Vue({
     el: '#app',
     data: {
-        name: "Kanban application"
+        name: 'Kanban boards'
     },
+    methods: {
 
+    }
 })
