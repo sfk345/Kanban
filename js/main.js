@@ -2,20 +2,22 @@ let eventBus = new Vue()
 
 Vue.component('Notes', {
     template:`
-    <div id="Notes">
-        <div class="note">
-            <columnOne :noteOne="noteOne"></columnOne>
+    <div class="Notes">
+        <div id="Notes">
+            <div class="note">
+                <columnOne :noteOne="noteOne"></columnOne>
+            </div>
+            <div class="note">
+                <columnTwo :noteTwo="noteTwo"></columnTwo>
+            </div>
+            <div class="note">
+                <columnThree :noteThree="noteThree"></columnThree>
+            </div>
+            <div class="note">
+                <columnFore :noteFore="noteFore"></columnFore>
+            </div>
+            <note-add></note-add>
         </div>
-        <div class="note">
-            <columnTwo :noteTwo="noteTwo"></columnTwo>
-        </div>
-        <div class="note">
-            <columnThree :noteThree="noteThree"></columnThree>
-        </div>
-        <div class="note">
-            <columnFore :noteFore="noteFore"></columnFore>
-        </div>
-        <note-add></note-add>
     </div>
 `,
     data() {
@@ -59,9 +61,9 @@ Vue.component('columnOne', {
                     <li class="tasks">Deadline: {{noteCard.dateDeadline}}</li>
                     <li class="tasks" v-if="noteCard.update != null">Last updated: {{ noteCard.update }}</li>
                 </ul>
-                <a @click="updateNote(noteCard)">Update</a>
-                <a @click="deleteNote(noteCard)">Delete</a>
-                <a @click="nextNote(noteCard)">Next ></a>
+                <button @click="updateNote(noteCard)">Update</button>
+                <button @click="deleteNote(noteCard)">Delete</button>
+                <button @click="nextNote(noteCard)">Next ></button>
             </div>
         </div>
     `,
@@ -97,7 +99,7 @@ Vue.component('columnOne', {
 Vue.component('columnTwo', {
     template: `
         <div class="col">
-            <h2>Tasks in progress</h2>
+            <h3>Tasks in progress</h3>
             <div class="column-one" v-for="noteCard in noteTwo">
                 <p>{{noteCard.name}}</p>
                 <ul>
@@ -108,8 +110,8 @@ Vue.component('columnTwo', {
                     <li class="tasks" v-if="noteCard.reasonForReturn != null">Reason of return: {{ noteCard.reasonForReturn }}</li>
                     <li class="tasks" v-if="noteCard.update != null">Last updated: {{ noteCard.update }}</li>
                 </ul>
-                <a @click="updateNote(noteCard)">Update</a>
-                <a @click="nextNote(noteCard)">Next ></a>
+                <button @click="updateNote(noteCard)">Update</button>
+                <button @click="nextNote(noteCard)">Next ></button>
 
             </div>
         </div>
@@ -150,9 +152,9 @@ Vue.component('columnThree', {
                     <li class="tasks" v-if="noteCard.reasonForReturn != null">Reason of return: {{ noteCard.reasonForReturn }}</li>
                     <li class="tasks" v-if="noteCard.update != null">Last updated: {{ noteCard.update}}</li>
                 </ul>
-                <a @click="updateNote(noteCard)">Update</a>
-                <a @click="nextNote(noteCard)">Next ></a>
-                <a @click="Previous(noteCard)">< Previous</a>
+                <button @click="updateNote(noteCard)">Update</button>
+                <button @click="nextNote(noteCard)">Next ></button>
+                <button @click="Previous(noteCard)">< Previous</button>
             </div>
         </div>
     `,
@@ -225,19 +227,19 @@ Vue.component('note-add', {
     template: `
     <div class="addform">
         <form>
-            <p>
+            <div class="note-form">
                 <label for="name">Name of the note</label>
-                <input id="form-name" required v-model="name" maxlength="30" type="text" placeholder="title">
-            </p>
-            <div>
+                <input id="form-name" class="form-input" required v-model="name" maxlength="30" type="text" placeholder="title">
+            </div>
+            <div class="note-form">
                 <label for="description">Description for new note</label>
-                <textarea required id="form-input" rows="5" columns="10" v-model="task" maxlength="60"> </textarea>
+                <textarea required id="form-input" class="form-input" rows="5" columns="10" v-model="task" maxlength="60"> </textarea>
             </div>
-            <div>
+            <div class="note-form">
                 <label for="deadline">Deadline of the note</label>
-                <input required type="date" required placeholder="01.01.1990" id="form-date" v-model="dateDeadline">
+                <input required type="date" required placeholder="01.01.1990" id="form-date" class="form-input" v-model="dateDeadline">
             </div>
-            <button @click="onSubmit">Add a task</button>
+            <button @click="onSubmit" class="form-input">Add a task</button>
         </form>
     </div>
     `,
@@ -274,7 +276,7 @@ Vue.component('note-add', {
 let app = new Vue({
     el: '#app',
     data: {
-        name: 'Kanban boards'
+        name: 'Kanban application'
     },
     methods: {
 
