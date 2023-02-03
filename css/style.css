@@ -11,7 +11,7 @@ h1{
     text-align: center;
     font-family: cursive;
     color: red;
-    box-shadow: 0 20px 20px #6c6c6c;
+    /*box-shadow: 0 20px 20px #6c6c6c;*/
 }
 h2{
     font-family: cursive;
@@ -28,6 +28,9 @@ li{
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: linear-gradient(341deg, black,#257d98, #0ac3ff, #30778d, black);
+    border-radius: 25px;
+    width: 250px;
 }
 .form-label{
     color: #ff5757;

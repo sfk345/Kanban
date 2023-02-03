@@ -2,19 +2,18 @@ let eventBus = new Vue()
 Vue.component('Notes', {
     template: `
        <div class="Notes">
-           <note-add></note-add>
            <div class="all-cards">
                 <div class="note">
-                    <h2>New task</h2>
                     <columnOne :noteOne="noteOne"></columnOne>
                 </div>
                 <div class="note">
-                    <h2>Task in progress</h2>
                     <columnTwo :noteTwo="noteTwo"></columnTwo>
                 </div>
                 <div class="note">
-                    <h2>Completed tasks</h2>
                     <columnThree :noteThree="noteThree"></columnThree>
+                </div>
+                <div class="note">
+                    <columnFore :noteFore="noteFore"></columnFore>
                 </div>
            </div>
        </div>`,
@@ -23,35 +22,32 @@ Vue.component('Notes', {
             noteOne:[],
             noteTwo:[],
             noteThree:[],
+            noteFore:[]
         }
     },
     mounted() {
         eventBus.$on('firstColumn', noteCard => {
-            if(this.noteOne.length < 3){
-                this.noteOne.push(noteCard)
+            this.noteOne.push(noteCard)
 
-                console.log(this.noteOne)
-            }
+            console.log(this.noteOne)
         })
         eventBus.$on('secondColumn', noteCard => {
-            if(this.noteTwo.length != null){
-                this.noteTwo.push(noteCard)
-                this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
-                console.log(this.noteTwo)
-            }
+            this.noteTwo.push(noteCard)
+            // this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
+            console.log(this.noteTwo)
 
         })
         eventBus.$on('thirdColumn', noteCard => {
             this.noteThree.push(noteCard)
-            this.noteTwo.splice(this.noteTwo.indexOf(noteCard), 1)
-            console.log(this.noteTwo)
+            // this.noteTwo.splice(this.noteTwo.indexOf(noteCard), 1)
             console.log(this.noteThree)
         })
-        // eventBus.$on('fromFirstColumnToThird', noteCard => {
-        //     this.noteThree.push(noteCard)
-        //     this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
-        //
-        // })
+        eventBus.$on('forthColumn', noteCard => {
+            this.noteFore.push(noteCard)
+            noteCard.onTime = new Date().toLocaleString()
+            // this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
+
+        })
 
     },
 
@@ -60,27 +56,23 @@ Vue.component('Notes', {
 Vue.component('columnOne', {
     template: `
        <div class="column">
-                <div class="column-one" v-for="column in noteOne">
-                <h3>{{column.name}}</h3>
-                    <span>
-                        <li v-for="task in column.arrayOfTasks" v-if="task.title != null" >
-                                <strong>{{task.id}}</strong>
-                                <input type="checkbox" 
-                                v-on:click="task.completed = true"
-                                v-on:click='column.status += 1'>
-                                <span :class="{done: task.completed}" >{{task.title}}</span>
-                        </li>
-                        <input
-                            value="Change"
-                            class="btn-del"
-                            type="button"
-                            @click="Changing">
-                        <input
-                            value="Delete"
-                            class="btn-del"
-                            type="button"
-                            @click="DeleteNote">
-                    </span>
+                <div class="column-one">
+                <h3>New tasks</h3>
+                    <div>
+                        <p>{{noteCard.name}}</p>
+                        <ul>
+                            <li>Description of task: {{noteCard.task}}</li>
+                            <li>Date of creation: {{noteCard.dateCreate}}</li>
+                            <li>Date of deadline: {{noteCard.dateTask}}</li>
+                            <li v-if="noteCard.update != null">Last updated: {{noteCard.update}}</li>
+                        </ul>
+                        <input value="Update" class="btn-del"
+                            type="button" @click="UpdateNote">
+                        <input value="Delete" class="btn-del"
+                            type="button" @click="DeleteNote">
+                        <input value="Chang" class="btn-del"
+                            type="button" @click="ChangNote">
+                    </div>
                 </div>
        </div>`,
     methods: {
@@ -88,14 +80,27 @@ Vue.component('columnOne', {
             this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
             console.log(noteCard)
         },
-        Changing(noteCard){
+        UpdateNote(noteCard){
+            noteCard.name = prompt('Name of new task:', noteCard.name)
+            noteCard.task = prompt('New task:', noteCard.name)
+            noteCard.name = prompt('Date of deadline:', noteCard.name)
+            noteCard.dateTask = new Date().toLocaleString()
+        },
+        ChangNote(noteCard){
             eventBus.$emit('secondColumn', noteCard)
         }
     },
     props: {
         noteOne:{
-            type: Array,
-            required: false
+            type: Array
+
+        },
+        noteTwo:{
+            type: Array
+
+        },
+        noteCard:{
+            type: Object
 
         },
     },
@@ -104,22 +109,21 @@ Vue.component('columnOne', {
 Vue.component('columnTwo', {
     template: `
        <div class="column">
-                <div class="column-one" v-for="column in noteTwo">
-                <h3>{{column.name}}</h3>
-                    <span>
-                        <li v-for="task in column.arrayOfTasks" v-if="task.title != null" >
-                                <strong>{{task.id}}</strong>
-                                <input type="click" 
-                                v-on:click="task.completed = true"
-                                v-on:click='column.status += 1'>
-                                <span :class="{done: task.completed}" >{{task.title}}</span>
-                        </li>
-                        <input
-                            value="Change"
-                            class="btn-del"
-                            type="button"
-                            @click="changeColTwo">
-                    </span>
+                <div class="column-one">
+                <h3>Task in progress</h3>
+                    <div>
+                        <p>{{noteCard.name}}</p>
+                        <ul>
+                            <li>Description of task: {{noteCard.task}}</li>
+                            <li>Date of creation: {{noteCard.dateCreate}}</li>
+                            <li>Date of deadline: {{noteCard.dateTask}}</li>
+                            <li v-if="noteCard.update != null">Last updated: {{noteCard.update}}</li>
+                        </ul>
+                        <input value="Update" class="btn-del"
+                            type="button" @click="UpdateNoteTwo">
+                        <input value="Chang" class="btn-del"
+                            type="button" @click="ChangeNoteTwo">
+                    </div>
                 </div>
        </div>`,
     props: {
@@ -127,42 +131,74 @@ Vue.component('columnTwo', {
             type: Array,
             required: false
 
+        },
+        noteCard: {
+            type: Object
         }
 
     },
     methods: {
-        changeColTwo(noteCard) {
+        ChangeNoteTwo(noteCard) {
                 eventBus.$emit('thirdColumn', noteCard)
             }
 
+        },
+        UpdateNoteTwo(noteCard){
+            noteCard.name = prompt('Name of new task:', noteCard.name)
+            noteCard.task = prompt('New task:', noteCard.name)
+            noteCard.name = prompt('Date of deadline:', noteCard.name)
+            noteCard.dateTask = new Date().toLocaleString()
         },
 
 })
 Vue.component('columnThree', {
     template: `
-       <div class="column-one">
-            <div class="column-one" v-for="column in noteThree">
-            <h3>{{column.name}}</h3>
-                <span>
-                    <li v-for="task in column.arrayOfTasks" v-if="task.title != null" :class="{BackgroundThree: task.title != null}">
-                            <strong>{{task.id}}</strong>
-                            <input type="checkbox" 
-                            :disabled="task.completed" 
-                            >
-                            <span :class="{done: task.completed}" >{{task.title}}</span>
-                    </li>
-                    <p>Date of the problem solution: <br>{{column.date}}</p>
-                </span>
-            </div>
+       <div class="column">
+                <div class="column-one">
+                <h3>Tested tasks</h3>
+                    <div>
+                        <p>{{noteCard.name}}</p>
+                        <ul>
+                            <li>Description of task: {{noteCard.task}}</li>
+                            <li>Date of creation: {{noteCard.dateCreate}}</li>
+                            <li>Date of deadline: {{noteCard.dateTask}}</li>
+                            <li v-if="noteCard.update != null">Last updated: {{noteCard.update}}</li>
+                            <li v-if="noteCard.reasonForReturn != null">Reason for return: {{noteCard.reasonForReturn}}</li>
+                        </ul>
+                        <input value="Update" class="btn-del"
+                            type="button" @click="UpdateNoteTwo">
+                        <input value="Chang" class="btn-del"
+                            type="button" @click="ChangeNoteThree">
+                        <input value="Bring it back" class="btn-del"
+                            type="button" @click="BringBack">
+                    </div>
+                </div>
        </div>`,
     props: {
         noteThree:{
             type: Array,
             required: false
 
+        },
+        noteCard:{
+            type: Object
         }
 
     },
+    methods:{
+        ChangeNoteThree(noteCard) {
+            eventBus.$emit('forthColumn', noteCard)
+        }
+
+    },
+        UpdateNoteTwo(noteCard){
+            noteCard.name = prompt('Name of new task:', noteCard.name)
+            noteCard.task = prompt('New task:', noteCard.task)
+            noteCard.dateTask = prompt('Date of deadline:', noteCard.dateTask)
+            noteCard.dateTask = new Date().toLocaleString()
+        },
+
+}
 
 })
 Vue.component('note-add', {
@@ -171,26 +207,14 @@ Vue.component('note-add', {
        <div>
        <form class="note-form">
             <label for="name" class="form-label">Name of the note</label>
-           <input class="form-input" id="task" v-model="name" maxlength="50" required placeholder="task">
+           <input class="form-input" id="task" v-model="name" required placeholder="task">
             <div class="name-column">
-                <label for="name" class="form-label">Add note:</label>
-                <input class="form-input" id="task1" v-model="task1" maxlength="50" required placeholder="task">
+                <label for="name" class="form-label">Add note</label>
+                <textarea class="form-input" id="task1" v-model="task" required placeholder="task"></textarea>
             </div>
             <div class="name-column">
-                <label for="name" class="form-label">Add note:</label>
-                <input class="form-input" id="task2" v-model="task2" maxlength="50" required placeholder="task">
-            </div>
-            <div class="name-column">
-                <label for="name" class="form-label">Add note:</label>
-                <input class="form-input" id="task3" v-model="task3" maxlength="50" required placeholder="task">
-            </div>
-            <div class="name-column">
-                <label for="name" class="form-label">Add note:</label>
-                <input class="form-input" id="task4" v-model="task4" maxlength="50" placeholder="task">
-            </div>
-            <div class="name-column">
-                <label for="name" class="form-label">Add note:</label>
-                <input class="form-input" id="task5" v-model="task5" maxlength="50" placeholder="task">
+                <label for="name" class="form-label">Deadline date</label>
+                <input class="form-input" id="task5" v-model="dateTask" type="date">
             </div>
             <input @click="onSubmit" class="btn" type="button" value="Create"> 
        </form>
@@ -199,36 +223,27 @@ Vue.component('note-add', {
     data() {
         return {
             name: null,
-            task1:null,
-            task2:null,
-            task3:null,
-            task4:null,
-            task5:null,
+            task:null,
+            dateTask:null,
+            dateCreate: null,
         }
     },
     methods: {
         onSubmit() {
             let noteCard = {
                 name: this.name,
-                arrayOfTasks: [ {id: 1, title: this.task1, completed: false},
-                    {id: 2, title: this.task2, completed: false},
-                    {id: 3, title: this.task3, completed: false},
-                    {id: 4, title: this.task4, completed: false},
-                    {id: 5, title: this.task5, completed: false},
-                ],
-                date: null,
-                status: 0
-
+                task: this.task,
+                dateTask: this.dateTask,
+                dateCreate: new Date().toLocaleString(),
+                update: null,
+                reasonForReturn: null,
+                completedOnTime: null
             }
-
-            eventBus.$emit('firstColumn', noteCard),
-                this.name = null,
-                this.arrayOfTasks = null,
-                this.task1 = null,
-                this.task2 = null,
-                this.task3 = null,
-                this.task4 = null,
-                this.task5 = null
+            eventBus.$emit('firstColumn', noteCard)
+                this.name = null
+                this.task = null
+                this.dateTask = null
+                this.dateCreate = null
         },
 
     },
@@ -246,7 +261,7 @@ Vue.component('note-add', {
 let app = new Vue({
     el: '#app',
     data: {
-        name: "Notes application"
+        name: "Kanban application"
     },
 
 })
