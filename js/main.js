@@ -47,11 +47,11 @@ Vue.component('Notes', {
             console.log(this.noteTwo)
             console.log(this.noteThree)
         })
-        eventBus.$on('fromFirstColumnToThird', noteCard => {
-            this.noteThree.push(noteCard)
-            this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
-
-        })
+        // eventBus.$on('fromFirstColumnToThird', noteCard => {
+        //     this.noteThree.push(noteCard)
+        //     this.noteOne.splice(this.noteOne.indexOf(noteCard), 1)
+        //
+        // })
 
     },
 
@@ -66,8 +66,8 @@ Vue.component('columnOne', {
                         <li v-for="task in column.arrayOfTasks" v-if="task.title != null" >
                                 <strong>{{task.id}}</strong>
                                 <input type="checkbox" 
-                                v-on:change="task.completed = true"
-                                v-on:change='column.status += 1'>
+                                v-on:click="task.completed = true"
+                                v-on:click='column.status += 1'>
                                 <span :class="{done: task.completed}" >{{task.title}}</span>
                         </li>
                         <input
@@ -104,22 +104,23 @@ Vue.component('columnOne', {
 Vue.component('columnTwo', {
     template: `
        <div class="column">
-            <div class="column-one" v-for="column in noteTwo">
-            <h3>{{column.name}}</h3>
-                <span>
-                    <li v-for="task in column.arrayOfTasks" v-if="task.title != null"  :class="{BackgroundTwo: task.title != null}">
-                            <strong>{{task.id}}</strong>
-                            <input type="checkbox" 
-                            v-on:change="task.completed = true" 
-                            :disabled="task.completed" 
-                            v-on:change='column.status += 1'
-                            @change.prevent="changeColTwo(column)"
-                            >
-                            <span :class="{done: task.completed}" >{{task.title}}</span>
-                    </li>
-                    <p>Date of the problem solution: <br>{{column.date}}</p>
-                </span>
-            </div>
+                <div class="column-one" v-for="column in noteTwo">
+                <h3>{{column.name}}</h3>
+                    <span>
+                        <li v-for="task in column.arrayOfTasks" v-if="task.title != null" >
+                                <strong>{{task.id}}</strong>
+                                <input type="click" 
+                                v-on:click="task.completed = true"
+                                v-on:click='column.status += 1'>
+                                <span :class="{done: task.completed}" >{{task.title}}</span>
+                        </li>
+                        <input
+                            value="Change"
+                            class="btn-del"
+                            type="button"
+                            @click="changeColTwo">
+                    </span>
+                </div>
        </div>`,
     props: {
         noteTwo:{
@@ -131,19 +132,10 @@ Vue.component('columnTwo', {
     },
     methods: {
         changeColTwo(noteCard) {
-            let allNotes = 0
-            for(let i = 0; i < 5; i++){
-                if (noteCard.arrayOfTasks[i].title != null) {
-                    allNotes++
-                }
-            }
-            if ((noteCard.status / allNotes) * 100 === 100) {
-                noteCard.date = new Date().toLocaleString()
                 eventBus.$emit('thirdColumn', noteCard)
             }
 
         },
-    }
 
 })
 Vue.component('columnThree', {
