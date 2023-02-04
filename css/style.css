@@ -17,6 +17,7 @@ button{
     width: 110px;
     box-shadow: 1px 1px 13px 5px #21ffec;
     margin-top: 15px;
+    color: aliceblue;
 }
 #Notes{
     display: flex;
@@ -59,19 +60,21 @@ form{
 }
 input{
     border: none;
-    border-bottom: black solid;
+    border-bottom: aliceblue solid;
     background: none;
+    color: aliceblue;
 }
 textarea{
     border: none;
-    border-bottom: black solid;
+    border-bottom: aliceblue solid;
     background: none;
+    color: aliceblue;
 }
 
 #app{
     background: #e45cff;
-    padding: 130px 23px;
+    padding: 100px 15px;
     transform: translateY(-96px);
     position: fixed;
-    width: 1200px;
+    width: 98%;
 }
